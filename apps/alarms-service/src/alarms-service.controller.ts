@@ -1,16 +1,14 @@
 import { Controller, Inject, Logger } from '@nestjs/common';
 import { ClientProxy, EventPattern, Payload } from '@nestjs/microservices';
-import { MESSAGE_BROKER } from './constants';
 import { lastValueFrom } from 'rxjs';
+import { MESSAGE_BROKER } from './constants';
 
 @Controller()
 export class AlarmsServiceController {
   private readonly logger = new Logger(AlarmsServiceController.name);
-
   constructor(
-    @Inject(MESSAGE_BROKER) private readonly messageBroker: ClientProxy, // 👈
+    @Inject(MESSAGE_BROKER) private readonly messageBroker: ClientProxy,
   ) {}
-
   @EventPattern('alarm.created')
   async create(@Payload() data: { name: string; buildingId: number }) {
     this.logger.debug(
